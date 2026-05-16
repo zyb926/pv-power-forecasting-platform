@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>技术路线与系统架构 · 光伏功率智能预测平台</title>
+    <link rel="stylesheet" href="./styles.css?v=20260513b" />
+  </head>
+  <body data-page="architecture">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <span class="brand-mark">PV</span>
+          <div>
+            <small>CRAIC 2026</small>
+            <h1>光伏功率智能预测平台</h1>
+          </div>
+        </div>
+
+        <div class="brand-meta">
+          <div>
+            <span>系统定位</span>
+            <strong>算法内核 + 平台原型</strong>
+          </div>
+          <div>
+            <span>核心路线</span>
+            <strong>数据接入 → 频域建模 → 解释 → 决策</strong>
+          </div>
+          <div>
+            <span>平台闭环</span>
+            <strong>从原始数据延伸到业务建议输出</strong>
+          </div>
+        </div>
+
+        <nav class="side-nav">
+          <a class="side-link" href="./index.html" data-page-link="dashboard"><em>01</em><span>项目背景</span></a>
+          <a class="side-link" href="./analytics.html" data-page-link="analytics"><em>02</em><span>项目介绍</span></a>
+          <a class="side-link" href="./architecture.html" data-page-link="architecture"><em>03</em><span>技术路线</span></a>
+          <a class="side-link" href="./dispatch.html" data-page-link="dispatch"><em>04</em><span>总结规划</span></a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <p>展示系统如何把多源数据、频域模型与业务输出组织成完整的平台链路。</p>
+        </div>
+      </aside>
+
+      <div class="content-shell">
+        <header class="topbar reveal">
+          <div class="page-title">
+            <small>Technical Route</small>
+            <h2>技术路线与系统架构</h2>
+            <p>本页重点说明三个问题：数据如何进入系统，模型如何完成预测，结果又如何转化为可用的业务建议。</p>
+          </div>
+          <div class="topbar-badges">
+            <span class="badge" id="architectureMode">西南大学 · 论文二轮审核中</span>
+          </div>
+        </header>
+
+        <section class="section-card reveal">
+          <div class="card-head">
+            <div>
+              <h4>平台闭环流程图</h4>
+              <span>展示系统从原始数据接入到业务建议输出的完整流程</span>
+            </div>
+          </div>
+          <div class="route-diagram">
+            <div class="route-main" aria-label="平台闭环主流程">
+              <article class="route-node route-node-primary">
+                <span class="route-badge">01</span>
+                <h5>原始数据接入</h5>
+                <p>接入历史功率、气象观测、天气预报和设备状态等多源信息。</p>
+              </article>
+              <article class="route-node route-node-primary">
+                <span class="route-badge">02</span>
+                <h5>数据治理</h5>
+                <p>完成时间对齐、异常处理、切片建窗和标准化，为模型提供统一输入。</p>
+              </article>
+              <article class="route-node route-node-primary">
+                <span class="route-badge">03</span>
+                <h5>频域建模</h5>
+                <p>利用 FFT、实虚双分支和变量轴注意力建模跨变量频域依赖。</p>
+              </article>
+              <article class="route-node route-node-primary">
+                <span class="route-badge">04</span>
+                <h5>预测输出</h5>
+                <p>输出多步功率预测结果，并同步生成置信区间与风险提示。</p>
+              </article>
+              <article class="route-node route-node-primary">
+                <span class="route-badge">05</span>
+                <h5>业务建议</h5>
+                <p>面向储能控制、备用安排和日内修正提供直接依据。</p>
+              </article>
+            </div>
+
+            <div class="route-support" aria-label="平台支撑模块">
+              <article class="route-node route-node-secondary">
+                <span class="route-badge route-badge-soft">A</span>
+                <h5>指标评估</h5>
+                <p>用 MSE、MAE、R² 和多数据集对比验证模型性能。</p>
+              </article>
+              <article class="route-node route-node-secondary">
+                <span class="route-badge route-badge-soft">B</span>
+                <h5>解释分析</h5>
+                <p>用时域图、频域图、谱相干和频率权重解释模型为什么有效。</p>
+              </article>
+              <article class="route-node route-node-secondary">
+                <span class="route-badge route-badge-soft">C</span>
+                <h5>平台呈现</h5>
+                <p>通过网页曲线、指标图表和系统说明完成平台展示。</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid section-grid-2 architecture-feature-grid reveal">
+          <article class="section-card image-card architecture-image-card">
+            <div class="card-head">
+              <div>
+                <h4>CVSC-Transformer 算法结构图</h4>
+                <span>对应模型从频域输入、双分支编码到时域输出的主要计算路径</span>
+              </div>
+            </div>
+            <div class="arch-figure">
+              <img src="./assets/algorithm_architecture.png" alt="CVSC-Transformer 算法结构图" />
+            </div>
+            <div class="arch-figure-notes">
+              <article>
+                <strong>输入端</strong>
+                <p>把功率与气象多变量序列映射到频域，显式保留多尺度周期信息。</p>
+              </article>
+              <article>
+                <strong>建模核心</strong>
+                <p>通过实虚双分支和变量轴注意力建模谱相干关系，突出关键频带。</p>
+              </article>
+              <article>
+                <strong>输出端</strong>
+                <p>经时域重建后输出多步预测结果，并为风险判断和辅助决策提供输入。</p>
+              </article>
+            </div>
+          </article>
+
+          <article class="section-card">
+            <div class="card-head">
+              <div>
+                <h4>算法主路径</h4>
+                <span>把模型核心概括为四个关键步骤</span>
+              </div>
+            </div>
+            <div class="timeline">
+              <article class="timeline-item">
+                <span>A</span>
+                <strong>频域映射</strong>
+                <p>先把光伏功率和气象序列映射到频域，把时域中隐含的周期结构显式表达出来。</p>
+              </article>
+              <article class="timeline-item">
+                <span>B</span>
+                <strong>实部 / 虚部分支</strong>
+                <p>分别建模幅值信息和相位信息，避免关键相位关系在单一实值表示中丢失。</p>
+              </article>
+              <article class="timeline-item">
+                <span>C</span>
+                <strong>变量轴注意力</strong>
+                <p>在变量维度上学习光伏功率与气象变量之间的频域耦合关系。</p>
+              </article>
+              <article class="timeline-item">
+                <span>D</span>
+                <strong>时域重建与输出</strong>
+                <p>再回到时域输出多步预测结果，并进入风险分析与业务建议模块。</p>
+              </article>
+            </div>
+          </article>
+        </section>
+
+        <section class="grid section-grid-2 reveal">
+          <article class="section-card">
+            <div class="card-head">
+              <div>
+                <h4>系统分层架构</h4>
+                <span>从数据层、算法层到应用层的三层组织结构</span>
+              </div>
+            </div>
+            <div class="layer-grid">
+              <article class="layer-card">
+                <small>Layer 1</small>
+                <h5>数据层</h5>
+                <p>由历史功率、站端传感器、天气预报和设备状态组成多源输入基础。</p>
+              </article>
+              <article class="layer-card">
+                <small>Layer 2</small>
+                <h5>算法层</h5>
+                <p>由 RevIN 预处理、FFT 变换、CVSC-Transformer 推理和指标评估构成核心链路。</p>
+              </article>
+              <article class="layer-card">
+                <small>Layer 3</small>
+                <h5>应用层</h5>
+                <p>由可视化展示、风险预警、储能建议和日内调度辅助构成应用输出。</p>
+              </article>
+            </div>
+          </article>
+
+          <article class="section-card">
+            <div class="card-head">
+              <div>
+                <h4>系统功能介绍</h4>
+                <span>保留最能体现成品完成度的四项核心功能</span>
+              </div>
+            </div>
+            <div class="story-grid">
+              <article class="mini-story">
+                <span>采</span>
+                <div>
+                  <h5>多源数据采集</h5>
+                  <p>支持接入功率、气象和设备状态等多类变量，为建模提供基础数据。</p>
+                </div>
+              </article>
+              <article class="mini-story">
+                <span>预</span>
+                <div>
+                  <h5>多步功率预测</h5>
+                  <p>支持 15 / 60 / 180 分钟等代表性前瞻窗口的多步预测展示。</p>
+                </div>
+              </article>
+              <article class="mini-story">
+                <span>解</span>
+                <div>
+                  <h5>频域解释分析</h5>
+                  <p>通过谱相干、频率权重及时域和频域图示解释模型有效性。</p>
+                </div>
+              </article>
+              <article class="mini-story">
+                <span>用</span>
+                <div>
+                  <h5>调度辅助输出</h5>
+                  <p>结合风险等级和预测区间，形成储能动作、计划修正和业务建议。</p>
+                </div>
+              </article>
+            </div>
+          </article>
+        </section>
+
+        <section class="grid innovation-grid reveal">
+          <article class="section-card innovation-card">
+            <span>创新点 1</span>
+            <h4>跨变量谱相干建模</h4>
+            <p>把建模重点从单一时间依赖转向频域耦合关系，更贴近光伏与气象变量之间的物理联系。</p>
+          </article>
+          <article class="section-card innovation-card">
+            <span>创新点 2</span>
+            <h4>相位保持双分支</h4>
+            <p>通过实部与虚部分开编码保留相位信息，增强波峰波谷与天气扰动的对齐能力。</p>
+          </article>
+          <article class="section-card innovation-card">
+            <span>创新点 3</span>
+            <h4>可学习频率权重</h4>
+            <p>自动突出日周期、半日周期和关键扰动频带，提升精度的同时增强可解释性。</p>
+          </article>
+          <article class="section-card innovation-card">
+            <span>创新点 4</span>
+            <h4>平台化系统表达</h4>
+            <p>将算法结果组织成可展示的平台原型，形成预测、解释、预警和辅助决策闭环。</p>
+          </article>
+        </section>
+
+        <p class="footer-note">系统已经形成从数据接入、模型推理到业务输出的完整工程链路。</p>
+      </div>
+    </div>
+
+    <script src="./data.js?v=20260513a"></script>
+    <script src="./app.js?v=20260513a"></script>
+  </body>
+</html>
