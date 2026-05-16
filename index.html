@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>项目背景与平台总览 · 光伏功率智能预测平台</title>
+    <link rel="stylesheet" href="./styles.css?v=20260513b" />
+  </head>
+  <body data-page="dashboard">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <span class="brand-mark">PV</span>
+          <div>
+            <small>CRAIC 2026</small>
+            <h1>光伏功率智能预测平台</h1>
+          </div>
+        </div>
+
+        <div class="brand-meta">
+          <div>
+            <span>作品编号</span>
+            <strong>CRAIC2026X2QL8183</strong>
+          </div>
+          <div>
+            <span>项目类型</span>
+            <strong>人工智能创新赛</strong>
+          </div>
+          <div>
+            <span>项目状态</span>
+            <strong>论文二轮审核中</strong>
+          </div>
+        </div>
+
+        <nav class="side-nav">
+          <a class="side-link" href="./index.html" data-page-link="dashboard"><em>01</em><span>项目背景</span></a>
+          <a class="side-link" href="./analytics.html" data-page-link="analytics"><em>02</em><span>项目介绍</span></a>
+          <a class="side-link" href="./architecture.html" data-page-link="architecture"><em>03</em><span>技术路线</span></a>
+          <a class="side-link" href="./dispatch.html" data-page-link="dispatch"><em>04</em><span>总结规划</span></a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <p>围绕新能源并网需求、预测痛点与平台成型度，展示项目从问题提出到系统原型的基本逻辑。</p>
+        </div>
+      </aside>
+
+      <div class="content-shell">
+        <header class="topbar reveal">
+          <div class="page-title">
+            <small>Background & Overview</small>
+            <h2>项目背景与平台总览</h2>
+            <p>以一个完整背景块和一个关键指标块建立问题认知，再用成品回放展示平台已经具备的系统化表达能力。</p>
+          </div>
+          <div class="topbar-badges">
+            <span class="badge">CVSC-Transformer 核心引擎</span>
+            <span class="badge">真实光伏数据验证</span>
+            <span class="badge" id="dashboardSubnote">晴空稳态 · 15 分钟前瞻窗口</span>
+          </div>
+        </header>
+
+        <section class="section-card reveal">
+          <div class="card-head">
+            <div>
+              <h4>项目背景</h4>
+              <span>把政策牵引、现实痛点和研究切入点压缩为一条清晰的问题链</span>
+            </div>
+          </div>
+          <div class="merge-brief">
+            <article class="merge-point">
+              <strong>政策指向</strong>
+              <p>光伏发电已经成为新型电力系统的重要增量电源，高比例并网要求更精细的功率预测与调度协同能力。</p>
+            </article>
+            <article class="merge-point">
+              <strong>问题危害</strong>
+              <p>如果预测误差较大，电网侧会增加备用冗余，站端储能难以高效联动，并可能引发弃光和新能源利用效率下降。</p>
+            </article>
+            <article class="merge-point">
+              <strong>研究切入点</strong>
+              <p>问题核心不仅在时序波动，还在于辐照度、温度、湿度与功率之间存在相位错位和频域耦合，因此项目转向频谱依赖建模。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section-card reveal">
+          <div class="card-head">
+            <div>
+              <h4>关键实验指标</h4>
+              <span>把最能代表精度、鲁棒性和可部署性的四个结果合并到同一块展示</span>
+            </div>
+          </div>
+          <div class="metric-board">
+            <article class="metric-item">
+              <small>Dataset3 · 3 小时跨季平均 MSE</small>
+              <strong>0.2798</strong>
+              <p>来自论文 3-hour ahead forecasting 的春夏秋冬四季平均结果，相较 iTransformer 下降 7.6%，体现中期预测优势。</p>
+            </article>
+            <article class="metric-item">
+              <small>Dataset4 · 综合平均 MSE</small>
+              <strong>0.152</strong>
+              <p>来自多数据集综合表，代表 1 小时高波动工业场景下的平均预测误差，说明模型在复杂天气下仍具鲁棒性。</p>
+            </article>
+            <article class="metric-item">
+              <small>Dataset4 · 单样本推理时延</small>
+              <strong>4.018 ms</strong>
+              <p>来自复杂度对比表，在保证精度提升的同时保持可部署响应速度，适合站端滚动修正与辅助调度。</p>
+            </article>
+            <article class="metric-item">
+              <small>Dataset0 · 秋季 30 分钟 R²</small>
+              <strong>0.9428</strong>
+              <p>来自季节鲁棒性分析，说明模型在稳定天气条件下对 30 分钟预测窗口具有较强拟合能力。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="grid main-grid reveal">
+          <article class="section-card control-panel">
+            <div class="control-block">
+              <div class="control-label">
+                <strong>场景切换</strong>
+                <span>抽取三类典型天气扰动用于成品回放</span>
+              </div>
+              <div class="chip-group" id="scenarioChips">
+                <button type="button" class="chip" data-scenario="clear">晴空稳态</button>
+                <button type="button" class="chip" data-scenario="cloudy">云团扰动</button>
+                <button type="button" class="chip" data-scenario="front">强对流前沿</button>
+              </div>
+            </div>
+
+            <div class="control-block">
+              <div class="control-label">
+                <strong>预测时长</strong>
+                <span>对应 pred_len 映射后的预测前瞻窗口，而不是输入长度</span>
+              </div>
+              <div class="chip-group" id="horizonChips">
+                <button type="button" class="chip" data-horizon="15">15 分钟</button>
+                <button type="button" class="chip" data-horizon="60">60 分钟</button>
+                <button type="button" class="chip" data-horizon="180">180 分钟</button>
+              </div>
+            </div>
+
+            <div class="summary-box">
+              <small>预测时长说明</small>
+              <h4>pred_len 对应的前瞻窗口</h4>
+              <p id="horizonMeaning">这里的“预测时长”指预测前瞻窗口，而不是输入序列长度。</p>
+            </div>
+
+            <div class="summary-box" style="margin-top: 16px;">
+              <small>当前演示场景</small>
+              <h4 id="scenarioLabel">晴空稳态</h4>
+              <p id="scenarioSummary">周期结构清晰、辐照变化平滑，适合观察模型对日周期与半日周期的捕捉效果。</p>
+            </div>
+          </article>
+
+          <article class="section-card chart-card">
+            <div class="card-head">
+              <div>
+                <h4>系统成品回放曲线</h4>
+                <span>展示模型预测、真实功率和风险区间在不同前瞻窗口下的联动关系</span>
+              </div>
+              <div class="pill" id="chartMode">当前展示：15 分钟滚动预测 · pred_len=1</div>
+            </div>
+            <div id="forecastChart" class="chart-shell"></div>
+            <div class="legend-row">
+              <span><i class="legend-dot forecast-dot"></i>模型预测</span>
+              <span><i class="legend-dot actual-dot"></i>真实功率</span>
+              <span><i class="legend-dot band-dot"></i>预测区间</span>
+            </div>
+            <p class="card-note" id="chartContext">当前曲线回放展示的是典型真实场景下的预测关系。</p>
+          </article>
+
+          <aside class="insight-stack">
+            <article class="insight-card">
+              <small>下一时段预测功率</small>
+              <strong id="kpiNow">12.8 MW</strong>
+              <p id="kpiNowSub">较上一时段上升 0.6 MW</p>
+            </article>
+            <article class="insight-card">
+              <small>峰值到达时间</small>
+              <strong id="kpiPeak">13:30</strong>
+              <p id="kpiPeakSub">峰值位置稳定，适合按基准计划调度</p>
+            </article>
+            <article class="insight-card">
+              <small>波动风险等级</small>
+              <strong id="kpiRisk">低</strong>
+              <p id="warningText">天气扰动较小，预测区间较窄，可按日内基准计划执行。</p>
+            </article>
+            <article class="insight-card">
+              <small>辅助调度建议</small>
+              <strong id="kpiStorage">储能待机</strong>
+              <p id="dispatchText">优先保留机动容量，不需要提前强介入。</p>
+            </article>
+          </aside>
+        </section>
+
+        <p class="footer-note">项目已形成从背景论证到系统原型回放的完整展示起点。</p>
+      </div>
+    </div>
+
+    <script src="./data.js?v=20260513a"></script>
+    <script src="./app.js?v=20260513a"></script>
+  </body>
+</html>
