@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>项目介绍与实验验证 · 光伏功率智能预测平台</title>
+    <link rel="stylesheet" href="./styles.css?v=20260513b" />
+  </head>
+  <body data-page="analytics">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <span class="brand-mark">PV</span>
+          <div>
+            <small>CRAIC 2026</small>
+            <h1>光伏功率智能预测平台</h1>
+          </div>
+        </div>
+
+        <div class="brand-meta">
+          <div>
+            <span>页面角色</span>
+            <strong>项目介绍 + 实验验证</strong>
+          </div>
+          <div>
+            <span>实验核心</span>
+            <strong>精度、鲁棒性、可解释性</strong>
+          </div>
+          <div>
+            <span>数据基础</span>
+            <strong>多数据集真实光伏实验</strong>
+          </div>
+        </div>
+
+        <nav class="side-nav">
+          <a class="side-link" href="./index.html" data-page-link="dashboard"><em>01</em><span>项目背景</span></a>
+          <a class="side-link" href="./analytics.html" data-page-link="analytics"><em>02</em><span>项目介绍</span></a>
+          <a class="side-link" href="./architecture.html" data-page-link="architecture"><em>03</em><span>技术路线</span></a>
+          <a class="side-link" href="./dispatch.html" data-page-link="dispatch"><em>04</em><span>总结规划</span></a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <p>围绕建模动机、实验条件、多数据集结果、解释证据与部署代价，展示方法为什么有效、为什么可信。</p>
+        </div>
+      </aside>
+
+      <div class="content-shell">
+        <header class="topbar reveal">
+          <div class="page-title">
+            <small>Introduction & Validation</small>
+            <h2>项目介绍与实验验证</h2>
+            <p>从建模动机、实验条件、多数据集结果、季节鲁棒性、消融实验和部署代价六个方面说明方法为什么有效、为什么可信。</p>
+          </div>
+          <div class="topbar-badges">
+            <span class="badge" id="analyticsMode">晴空稳态 · 15 分钟前瞻窗口 · pred_len=1</span>
+            <span class="badge">MSE / MAE / R²</span>
+          </div>
+        </header>
+
+        <section class="section-card reveal">
+          <div class="card-head">
+            <div>
+              <h4>建模动机</h4>
+              <span>两张论文原图说明为什么需要从时域关系走向频域关系</span>
+            </div>
+          </div>
+          <div class="gallery-grid">
+            <article class="gallery-card">
+              <h4>时域关系图</h4>
+              <img src="./assets/paper/time_domain.png" alt="时域关系图" />
+              <p>在时域下，多气象变量与功率之间存在明显相位错位和幅值差异，变量关系并不容易被直接显式捕捉。</p>
+            </article>
+            <article class="gallery-card">
+              <h4>频域关系图</h4>
+              <img src="./assets/paper/frequency_domain.png" alt="频域关系图" />
+              <p>进入频域后，关键周期上的同步峰值更清晰，跨变量谱相干关系更容易被建模和解释。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section-card reveal">
+          <div class="card-head">
+            <div>
+              <h4>实验条件说明</h4>
+              <span>把场景视角、前瞻窗口定义和当前 benchmark 条件合并到同一块中展示</span>
+            </div>
+          </div>
+          <div class="experiment-board">
+            <div>
+              <div class="control-block">
+                <div class="control-label">
+                  <strong>场景视角</strong>
+                  <span>用于说明不同天气扰动下的建模难点</span>
+                </div>
+                <div class="chip-group" id="analyticsScenarioChips">
+                  <button type="button" class="chip" data-scenario="clear">晴空稳态</button>
+                  <button type="button" class="chip" data-scenario="cloudy">云团扰动</button>
+                  <button type="button" class="chip" data-scenario="front">强对流前沿</button>
+                </div>
+              </div>
+
+              <div class="control-block">
+                <div class="control-label">
+                  <strong>时长视角</strong>
+                  <span>这里表示预测前瞻窗口，而不是输入窗口长度</span>
+                </div>
+                <div class="chip-group" id="analyticsHorizonChips">
+                  <button type="button" class="chip" data-horizon="15">15 分钟</button>
+                  <button type="button" class="chip" data-horizon="60">60 分钟</button>
+                  <button type="button" class="chip" data-horizon="180">180 分钟</button>
+                </div>
+              </div>
+
+              <div class="focus-grid">
+                <article class="focus-note">
+                  <strong>15 分钟窗口</strong>
+                  <p>重点观察短时跟踪、局部突降后的恢复，以及模型对滚动修正场景的适配能力。</p>
+                </article>
+                <article class="focus-note">
+                  <strong>60 分钟窗口</strong>
+                  <p>重点观察误差带如何扩张，以及模型是否仍能提供小时级调度预备所需的稳定趋势。</p>
+                </article>
+                <article class="focus-note">
+                  <strong>180 分钟窗口</strong>
+                  <p>重点观察中期趋势保持能力，验证频域结构是否比单纯时域跟踪更适合较长前瞻窗口。</p>
+                </article>
+              </div>
+            </div>
+
+            <article class="section-card nested-panel">
+              <div class="card-head">
+                <div>
+                  <h4>当前实验口径</h4>
+                  <span>用于防止指标脱离条件单独出现</span>
+                </div>
+              </div>
+              <p class="section-text" id="analyticsDefinition">这里的“预测时长”表示预测前瞻窗口，而不是输入窗口长度。</p>
+              <p class="card-note" id="analyticsCondition">模型对比条件会随前瞻窗口改变，但不会随场景切换而改变。</p>
+              <div class="compact-notes">
+                <article>
+                  <strong id="analyticsScenarioLabel">晴空稳态</strong>
+                  <p id="analyticsScenarioSummary">周期结构清晰、辐照变化平滑，适合观察模型对日周期与半日周期的捕捉效果。</p>
+                </article>
+                <article>
+                  <strong>当前解释重点</strong>
+                  <p id="analyticsScenarioInsight">短时场景跟踪性强，适合用于滚动修正。</p>
+                </article>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="grid dataset-grid reveal" id="datasetCards"></section>
+
+        <section class="grid section-grid-2 reveal">
+          <article class="section-card">
+            <div class="card-head">
+              <div>
+                <h4>不同时长下的模型对比</h4>
+                <span id="compareSubtitle">条件：Dataset0（15 分钟分辨率）· MSE · 当前窗口 15 分钟（pred_len=1）</span>
+              </div>
+            </div>
+            <div id="compareBars" class="bars-shell"></div>
+            <p class="card-note">该模块对应论文中 Dataset0 的多时长 MSE 对比表，只随前瞻窗口变化，不随天气场景切换变化。</p>
+          </article>
+
+          <article class="section-card image-card">
+            <div class="card-head">
+              <div>
+                <h4>频谱相干与频率权重</h4>
+                <span>论文原图展示跨变量谱相干关系与可学习频率权重</span>
+              </div>
+            </div>
+            <img src="./assets/paper/spectral_attention.png" alt="频谱相干性热力图与注意力权重" />
+          </article>
+        </section>
+
+        <section class="grid section-grid-2 reveal">
+          <article class="section-card">
+            <div class="card-head">
+              <div>
+                <h4>季节鲁棒性热力图</h4>
+                <span>基于 Dataset0 的 R² 指标，说明模型在不同季节和不同窗口下的稳定性</span>
+              </div>
+            </div>
+            <div id="analyticsHeatmap" class="heatmap-shell"></div>
+          </article>
+
+          <article class="section-card image-card">
+            <div class="card-head">
+              <div>
+                <h4>全时长误差趋势图</h4>
+                <span>论文原图展示 15 至 180 分钟窗口下误差变化趋势</span>
+              </div>
+            </div>
+            <img src="./assets/paper/mse_trends.png" alt="全时长误差趋势图" />
+          </article>
+        </section>
+
+        <section class="grid section-grid-2 reveal">
+          <article class="section-card">
+            <div class="card-head">
+              <div>
+                <h4>消融结果</h4>
+                <span>说明跨变量谱相干建模、双分支复频谱和频率权重为何都是关键组件</span>
+              </div>
+            </div>
+            <div id="ablationRows"></div>
+            <p class="card-note">从当前结果可以看出，移除跨变量谱相干建模后的退化最显著，说明它是模型精度提升的核心来源；移除频率权重后退化幅度较小但持续存在，说明自适应频带选择对稳定增益同样重要。</p>
+          </article>
+
+          <article class="section-card">
+            <div class="card-head">
+              <div>
+                <h4>复杂度与部署代价</h4>
+                <span>说明模型精度提升并非依赖不可部署的大型计算开销</span>
+              </div>
+            </div>
+            <div id="complexityTable"></div>
+            <p class="card-note">Ours 的参数量为 7.72M、FLOPs 为 0.167G、推理时延为 4.018ms。虽然复杂度略高于极轻量的基线，但仍处于站端可部署范围，换来的是更稳定的中长期预测表现和更好的高波动场景鲁棒性。</p>
+          </article>
+        </section>
+
+        <section class="section-card reveal">
+          <div class="card-head">
+            <div>
+              <h4>核心结论</h4>
+              <span>把实验结果压缩成最关键的三条判断</span>
+            </div>
+          </div>
+          <div class="story-grid">
+            <article class="mini-story">
+              <span>A</span>
+              <div>
+                <h5>为什么长时窗口优势更明显</h5>
+                <p>预测窗口越长，瞬时扰动越难直接追踪，稳定周期结构越重要，而频域建模更擅长保住这种结构。</p>
+              </div>
+            </article>
+            <article class="mini-story">
+              <span>B</span>
+              <div>
+                <h5>为什么相位信息必须保留</h5>
+                <p>如果只保留单一实值表示，会损失变量之间的相位对齐信息，进而影响波峰波谷和天气变化的时间定位。</p>
+              </div>
+            </article>
+            <article class="mini-story">
+              <span>C</span>
+              <div>
+                <h5>为什么这个项目能落地</h5>
+                <p>因为它不仅在多数据集和高波动工业场景上取得较优结果，同时推理时延和复杂度仍处于可部署范围。</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <p class="footer-note">实验结果表明，模型在精度、鲁棒性、可解释性与部署可行性之间取得了平衡。</p>
+      </div>
+    </div>
+
+    <script src="./data.js?v=20260513a"></script>
+    <script src="./app.js?v=20260513a"></script>
+  </body>
+</html>
